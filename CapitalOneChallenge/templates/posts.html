@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>20 Latest Capital One Posts</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+              
+        
+    </head>
+    <body>
+        <h1>20 Latest Capital One Posts</h1>
+        <div class="container">
+            <div class="row">
+                <div id="popout" class="section scrollspy">
+
+                    <ul class="collapsible popout collapsible-accordion" data-collapsible="expandable">
+                      <li>
+                        <div class="collapsible-header"><i class="material-icons">subtitles</i>First</div>
+                        <div class="collapsible-body" style=""><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div>
+                      </li>
+                      <li class="active">
+                        <div class="collapsible-header active"><i class="material-icons">games</i>Second</div>
+                        <div class="collapsible-body" style="display: block;"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div>
+                      </li>
+                      <li>
+                        <div class="collapsible-header"><i class="material-icons">library_books</i>Third</div>
+                        <div class="collapsible-body" style=""><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div>
+                      </li>
+                    </ul> 
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div id="popout" class="section scrollspy">
+                    <ul class="collapsible popout collapsible-accordion" data-collapsible="expandable">
+                    {% for post in posts %}
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons"></i>{{forloop.counter}}</div>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li>Username: {{post.user.username}}</li>
+                                    <li>Profpic: <img src="{{post.user.profile_picture}}"/></li>
+                                    <li>Caption: {{post.caption.text}}</li>
+                                    {% if post.type ==  "image" %}
+                                        <li>Image: <img src="{{post.images.standard_resolution.url}}"></li>
+                                    {% elif post.type == "video" %}
+                                        <li>Video: 
+                                            <video width="320" height="240" controls>
+                                              <source src="{{post.videos.standard_resolution.url}}" type="video/mp4">
+                                              <source src="movie.ogg" type="video/ogg">
+                                              Your browser does not support the video tag.
+                                            </video>
+                                        </li>
+                                    {% endif %}
+                                    <li>Likes: {{post.likes.count}}</li>
+                                    <li>Post Link: {{post.link}}</li>
+                                    <li>Tags:
+                                        <ul>
+                                            {% for t in post.tags %}
+                                                <li>{{t}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <hr>
+                                    <br>
+                                    <br>
+                                </ul>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

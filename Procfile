@@ -1,0 +1,1 @@
+web: gunicorn CapitalOneChallenge.wsgi:application
