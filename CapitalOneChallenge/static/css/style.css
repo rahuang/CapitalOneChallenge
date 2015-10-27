@@ -685,8 +685,13 @@ h2.title{
 	padding: 20px;
 }
 
+.card-content {
+	font-size: 16px;
+}
+
 .caption {
-	font-size: 18px;
+	font-size: 14px;
+	padding: 10px !important;
 }
 
 .img-prof {
@@ -733,3 +738,8 @@ h2.title{
 .background-green {
 	background-color: green;
 }
+
+.background-blue {
+	background-color: blue;
+}
+

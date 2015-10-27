@@ -44,22 +44,22 @@
                             <div class="collapsible-header"><i class="material-icons"></i>{{forloop.counter}}</div>
                             <div class="collapsible-body">
                                 <ul>
-                                    <li>Username: {{post.user.username}}</li>
+                                    <li>Username: {{post.0.user.username}}</li>
                                     <li>Profpic: <img src="{{post.user.profile_picture}}"/></li>
-                                    <li>Caption: {{post.caption.text}}</li>
-                                    {% if post.type ==  "image" %}
+                                    <li>Caption: {{post.0.caption.text}}</li>
+                                    {% if post.0.type ==  "image" %}
                                         <li>Image: <img src="{{post.images.standard_resolution.url}}"></li>
-                                    {% elif post.type == "video" %}
+                                    {% elif post.0.type == "video" %}
                                         <li>Video: 
                                             <video width="320" height="240" controls>
-                                              <source src="{{post.videos.standard_resolution.url}}" type="video/mp4">
+                                              <source src="{{post.0.videos.standard_resolution.url}}" type="video/mp4">
                                               <source src="movie.ogg" type="video/ogg">
                                               Your browser does not support the video tag.
                                             </video>
                                         </li>
                                     {% endif %}
-                                    <li>Likes: {{post.likes.count}}</li>
-                                    <li>Post Link: {{post.link}}</li>
+                                    <li>Likes: {{post.0.likes.count}}</li>
+                                    <li>Post Link: {{post.0.link}}</li>
                                     <li>Tags:
                                         <ul>
                                             {% for t in post.tags %}
