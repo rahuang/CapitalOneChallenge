@@ -1,3 +1,17 @@
+var dict = null;
+var next = "";
+
+
+function loadStart(){
+    $("#load-more").prop("disabled",true);
+    $("#loader").show();
+}
+
+function loadFinish(){
+    $("#load-more").prop("disabled",false);
+    $("#loader").hide();
+}
+
 function formatData(data){
     var dict = {};
     dict["categories"] = [];
@@ -9,7 +23,6 @@ function formatData(data){
     dict["pneutral"] = [];
     var keys = Object.keys(data);
     keys.sort();
-    alert(keys);
     for(var i = 0; i < keys.length; i++){
         d = keys[i];
         dict["categories"].push(d);
@@ -19,7 +32,7 @@ function formatData(data){
         dict["neutral"].push(neutral);
         dict["pos"].push(pos);
         dict["neg"].push(neg);
-        var sum = pos + neg;
+        var sum = pos + neg == 0 ? 1 : pos + neg;
         dict["ppos"].push(pos/sum);
         dict["pneg"].push(neg/sum);
     }
@@ -107,3 +120,56 @@ function displayCharts(dict){
         }]
     });
 }
+
+$(function () {
+    loadStart();
+    $.ajax({
+      url: "/trendingdata",
+      context: document.body
+    }).done(function( data ) {
+        loadFinish();
+        next = data[0]
+        var values = data[1]
+        dict = formatData(values);
+        displayCharts(dict);
+    });
+});
+
+function combineDict(temp){
+    if(temp["categories"][temp["categories"].length - 1] == dict["categories"][0]){
+        temp["categories"].pop();
+        dict["neutral"][0] += temp["neutral"].pop();
+        dict["pos"][0] += temp["pos"].pop();
+        dict["neg"][0] += temp["neg"].pop();
+        temp["ppos"].pop();
+        temp["pneg"].pop();
+        dict["ppos"][0] = dict["pos"][0] / (dict["pos"][0] + dict["neg"][0]);
+        dict["pneg"][0] = dict["neg"][0] / (dict["pos"][0] + dict["neg"][0]);
+    }
+    dict["categories"] = temp["categories"].concat(dict["categories"]);
+    dict["neutral"] = temp["neutral"].concat(dict["neutral"]);
+    dict["pos"] = temp["pos"].concat(dict["pos"]);
+    dict["neg"] = temp["neg"].concat(dict["neg"]);
+    dict["ppos"] = temp["ppos"].concat(dict["ppos"]);
+    dict["pneg"] = temp["pneg"].concat(dict["pneg"]);
+}
+
+
+function loadMore(){
+    loadStart();
+    $.ajax({
+      url: "/trendingdata?next=" + next,
+      context: document.body
+    }).done(function( data ) {
+        loadFinish();
+        next = data[0]
+        var values = data[1]
+        var temp = formatData(values);
+        combineDict(temp);
+        displayCharts(dict);
+    });
+}
+
+
+
+

@@ -49,7 +49,7 @@ class IndexPage(TemplateView):
             sentiment_analysis = getSentimentAnalysis(comment)
 
             posts.append((tag, user, sentiment_analysis)) 
-        return render(request, "test.html", {"posts": posts})
+        return render(request, "index.html", {"posts": posts})
 
 class TrendingDataPage(TemplateView):
     # def get(self, request):
@@ -58,15 +58,18 @@ class TrendingDataPage(TemplateView):
     #     # content = result.read()
     #     return HttpResponse(json.load(result))
     def get(self, request):
+        # API endpoint to get data for charts
         params = request.GET
         api = generateInstragramAPI()
 
         data = dict()
+        # Generate data from most recent media or continue from another post
         if "next" in params:
             url = params["next"] + "&count=" + params["count"] + "&sig=" + params["sig"] + "&max_tag_id=" + params["max_tag_id"]
             recent_tags, next_ = api.tag_recent_media(with_next_url=url, count=33, tag_name="CapitalOne")
         else:
             recent_tags, next_ = api.tag_recent_media(count=33, tag_name="CapitalOne")
+
         more_tags, next_ = api.tag_recent_media(with_next_url=next_, count=33, tag_name="CapitalOne")
         recent_tags.extend(more_tags)
 
@@ -84,6 +87,10 @@ class TrendingDataPage(TemplateView):
         data = [next_, data]
 
         return HttpResponse(json.dumps(data), content_type='application/json')
+
+class Test(TemplateView):
+    def get(self, request):
+        return render(request, "temp.html")
             
     
 def staff_only(view):
