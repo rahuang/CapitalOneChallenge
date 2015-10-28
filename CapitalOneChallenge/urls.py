@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     
     url(r'^$', views.IndexPage.as_view(), name='index'),
-    url(r'^testpage/', views.TestPage.as_view(), name='test'),
+    url(r'^trendingdata/', views.TrendingDataPage.as_view(), name='trending_data'),
     
     url(r'^test/', include('testapp.urls')),
     url(r'^users/', include('users.urls')),

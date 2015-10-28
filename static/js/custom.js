@@ -37,6 +37,7 @@ jQuery(function($) {
 
     });
    $('[role="nav"]').singlePageNav({
+        currentClass: 'active',
         changeHash: true,
         scrollSpeed: 750,
         offset: 0,

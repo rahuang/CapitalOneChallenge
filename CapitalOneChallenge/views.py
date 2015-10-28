@@ -36,12 +36,9 @@ class NotFoundView(ErrorView):
     
 class IndexPage(TemplateView):
     """ The Index Page. """
-    template_name = 'index.html'
 
     def get(self, request):
-        access_token = "471186409.290c177.f0ec9eed516a4b5f976321e0aa54e5a0"
-        client_secret = "30868d2793a14376b27702a4cef10f17"
-        api = InstagramAPI(access_token=access_token, client_secret=client_secret)
+        api = generateInstragramAPI()
 
         posts = []
         recent_tags = api.tag_recent_media(count=20, tag_name="CapitalOne")
@@ -49,36 +46,34 @@ class IndexPage(TemplateView):
             user = api.user(tag.user.id)
 
             comment = tag.caption.text.replace("#", "")
-            post_data = [('text', comment.encode('utf-8'))]
-            sentiment_analysis = urllib2.urlopen('http://text-processing.com/api/sentiment/', urllib.urlencode(post_data))
+            sentiment_analysis = getSentimentAnalysis(comment)
 
-            posts.append((tag, user, json.load(sentiment_analysis))) 
+            posts.append((tag, user, sentiment_analysis)) 
         return render(request, "test.html", {"posts": posts})
 
-class TestPage(TemplateView):
+class TrendingDataPage(TemplateView):
     # def get(self, request):
     #     post_data = [('txt','I love you'),]     # a sequence of two element tuples
     #     result = urllib2.urlopen('http://sentiment.vivekn.com/api/text/', urllib.urlencode(post_data))
     #     # content = result.read()
     #     return HttpResponse(json.load(result))
     def get(self, request):
-        access_token = "471186409.290c177.f0ec9eed516a4b5f976321e0aa54e5a0"
-        client_secret = "30868d2793a14376b27702a4cef10f17"
-        api = InstagramAPI(access_token=access_token, client_secret=client_secret)
+        params = request.GET
+        api = generateInstragramAPI()
 
         data = dict()
-        recent_tags, next_ = api.tag_recent_media(count=33, tag_name="CapitalOne")
-        more_tags, next_ = api.tag_recent_media(with_next_url=next_, count=33, tag_name="CapitalOne")
-        recent_tags.extend(more_tags)
+        if "next" in params:
+            url = params["next"] + "&count=" + params["count"] + "&sig=" + params["sig"] + "&max_tag_id=" + params["max_tag_id"]
+            recent_tags, next_ = api.tag_recent_media(with_next_url=url, count=33, tag_name="CapitalOne")
+        else:
+            recent_tags, next_ = api.tag_recent_media(count=33, tag_name="CapitalOne")
         more_tags, next_ = api.tag_recent_media(with_next_url=next_, count=33, tag_name="CapitalOne")
         recent_tags.extend(more_tags)
 
         for tag in recent_tags:
             time = tag.created_time.strftime("%Y-%m-%d")
             comment = tag.caption.text.replace("#", "")
-            post_data = [('text', comment.encode('utf-8'))]
-            sentiment_analysis = urllib2.urlopen('http://text-processing.com/api/sentiment/', urllib.urlencode(post_data))
-            sentiment_analysis = json.load(sentiment_analysis)
+            sentiment_analysis = getSentimentAnalysis(comment)
 
             if time not in data:
                 data[time] = dict()
@@ -86,19 +81,9 @@ class TestPage(TemplateView):
                 data[time]["pos"] = 0
                 data[time]["neg"] = 0
             data[time][sentiment_analysis["label"]] += 1
+        data = [next_, data]
 
-        values = dict()
-        values["categories"] = []
-        values["neutral"] = []
-        values["pos"] = []
-        values["neg"] = []
-        for d in sorted(data):
-            values["categories"].append(d)
-            values["neutral"].append(data[d]["neutral"])
-            values["pos"].append(data[d]["pos"])
-            values["neg"].append(data[d]["neg"])
-
-        return HttpResponse(json.dumps(values), content_type='application/json')
+        return HttpResponse(json.dumps(data), content_type='application/json')
             
     
 def staff_only(view):
@@ -115,4 +100,12 @@ def staff_only(view):
         
     return decorated_view
     
-    
+def generateInstragramAPI():
+    access_token = "471186409.290c177.f0ec9eed516a4b5f976321e0aa54e5a0"
+    client_secret = "30868d2793a14376b27702a4cef10f17"
+    return InstagramAPI(access_token=access_token, client_secret=client_secret)
+
+def getSentimentAnalysis(comment):
+    post_data = [('text', comment.encode('utf-8'))]
+    sentiment_analysis = urllib2.urlopen('http://text-processing.com/api/sentiment/', urllib.urlencode(post_data))
+    return json.load(sentiment_analysis)
