@@ -5,13 +5,11 @@ var next = "";
 function loadStart(){
     $("#load-more").prop("disabled",true);
     $("#loader").show();
-    $("#loading-text").hide();
 }
 
 function loadFinish(){
     $("#load-more").prop("disabled",false);
     $("#loader").hide();
-    $("#loading-text").hide();
 }
 
 function formatData(data){
