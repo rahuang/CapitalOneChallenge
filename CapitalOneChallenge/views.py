@@ -50,6 +50,7 @@ class IndexPage(TemplateView):
             comment = tag.caption.text.replace("#", "")
             sentiment_analysis = getSentimentAnalysis(comment)
 
+            # Pushes data to posts and top posts
             posts.append((tag, user, sentiment_analysis)) 
             if(sentiment_analysis["label"] == "pos"):
                 top.append((tag.user.username, tag.caption.text))
@@ -76,6 +77,7 @@ class TrendingDataPage(TemplateView):
         more_tags, next_ = api.tag_recent_media(with_next_url=next_, count=33, tag_name="CapitalOne")
         recent_tags.extend(more_tags)
 
+        # Parse values into dictionary
         for tag in recent_tags:
             time = tag.created_time.strftime("%Y-%m-%d")
             comment = tag.caption.text.replace("#", "")
@@ -106,11 +108,13 @@ def staff_only(view):
     return decorated_view
     
 def generateInstragramAPI():
+    # Setup for using Instagram API and the api keys
     access_token = "471186409.290c177.f0ec9eed516a4b5f976321e0aa54e5a0"
     client_secret = "30868d2793a14376b27702a4cef10f17"
     return InstagramAPI(access_token=access_token, client_secret=client_secret)
 
 def getSentimentAnalysis(comment):
+    # Setup for using Text-Processing Sentiment Analysis
     post_data = [('text', comment.encode('utf-8'))]
     sentiment_analysis = urllib2.urlopen('http://text-processing.com/api/sentiment/', urllib.urlencode(post_data))
     return json.load(sentiment_analysis)

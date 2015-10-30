@@ -126,7 +126,7 @@ function displayD3(dict){
   $("#d3vis").html("<h4>Cluster Representation of Overall Sentiment</h4>");
 
   var width = 960,
-      height = 500,
+      height = 400,
       padding = 1.5, // separation between same-color nodes
       clusterPadding = 6, // separation between different-color nodes
       maxRadius = 40;
@@ -158,7 +158,7 @@ function displayD3(dict){
   var pos = 0;
   var nodes = d3.range(n).map(function() {
     var i = data[pos][0],
-        r =  15 + data[pos][1] * 2 > maxRadius ? maxRadius : 15 + data[pos][1] * 2,
+        r =  15 + data[pos][1] * 2 > maxRadius ? maxRadius : 10 + data[pos][1] * 3,
         d = {cluster: i, radius: r};
         pos++;
     if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
