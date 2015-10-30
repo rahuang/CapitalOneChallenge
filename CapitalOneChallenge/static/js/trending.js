@@ -125,7 +125,7 @@ function displayCharts(dict){
 function displayD3(dict){
   $("#d3vis").html("<h4>Cluster Representation of Overall Sentiment</h4>");
 
-  var width = 960,
+  var width = 400,
       height = 400,
       padding = 1.5, // separation between same-color nodes
       clusterPadding = 6, // separation between different-color nodes
