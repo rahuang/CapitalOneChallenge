@@ -743,3 +743,6 @@ h2.title{
 	background-color: blue;
 }
 
+.navbar-img {
+    margin-right: 0px !important;
+}
