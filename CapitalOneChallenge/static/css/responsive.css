@@ -62,7 +62,7 @@
 }
 
 /* Custom, iPhone Retina */ 
-@media (min-width : 320px) and (max-width: 800px)  {
+@media (min-width : 320px) and (max-width: 767px)  {
 	.navbar-default .navbar-nav > li > a {
     	padding: 15px 20px;
 	}
@@ -74,9 +74,9 @@
 	.navbar-brand {
 	    padding-top: 0px;
 	}
-	.navbar-img {
+	/*.navbar-img {
 	    margin-top:-25px !important;
-	}
+	}*/
 
 
 	.profile-desc {
