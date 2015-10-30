@@ -58,6 +58,8 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.easing.1.3.js"></script>
     <!-- Sticky Menu -->
     <script src="{{ STATIC_URL }}js/jquery.sticky.js"></script>
+    <!-- D3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <!-- Custom Javascript -->
     <script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
 
@@ -164,7 +166,7 @@ png  height="50px"                    <span class="icon-bar"></span>
                                 {% else %}
                                 <div class="collapsible-header background-blue">
                                 {% endif %}
-                                    <strong style="color:white">{{forloop.counter}}</strong>
+                                    <strong style="color:white">{{forloop.counter}}. {{post.user.username}}</strong>
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="row">
@@ -250,6 +252,9 @@ png  height="50px"                    <span class="icon-bar"></span>
 
                     <div id="percentage-chart"></div>
 
+
+                    <div id="d3vis"></div>
+
                     <div id="loader" style="display: none;">
                         <div class="preloader-wrapper big active">
                             <div class="spinner-layer spinner-blue-only">
@@ -280,6 +285,7 @@ png  height="50px"                    <span class="icon-bar"></span>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
+                    <h2 class="heading-title" style="text-align:center;">Top Positive Comments</h2>
                     <div class="carousel slide text-center" id="testimonial-carousel">
                          <ol class="carousel-indicators">
                             <li data-target="#testimonial-carousel" data-slide-to="0" class="active"></li>
@@ -287,21 +293,18 @@ png  height="50px"                    <span class="icon-bar"></span>
                             <li data-target="#testimonial-carousel" data-slide-to="2"></li>
                           </ol>
                         <div class="carousel-inner">
+                            {% for t in top %}
+                                {% if forloop.counter == 1 %}
                             <div class="item active">
-                                <p>“ Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam, te usu virtute placerat. Purto brute disputando cu est, eam dicam soluta ei. Vel dicam vivendo accusata ei, cum ne periculis molestiae pri. Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam. ”</p>
+                                {% else %}
+                            <div class="item"> 
+                                {% endif %}
+                                <p>“ {{t.1}} ”</p>
 
-                                <h4 class="client-name">John Stone</h4>
+                                <h4 class="client-name">{{t.0}}</h4>
                             </div>
-                            <div class="item">
-                                <p>“ Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam, te usu virtute placerat. Purto brute disputando cu est, eam dicam soluta ei. Vel dicam vivendo accusata ei, cum ne periculis molestiae pri. Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam. ”</p>
 
-                                <h4 class="client-name">John Stone</h4>
-                            </div>
-                            <div class="item ">
-                                <p>“ Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam, te usu virtute placerat. Purto brute disputando cu est, eam dicam soluta ei. Vel dicam vivendo accusata ei, cum ne periculis molestiae pri. Lorem ipsum dolor sit amet, ea doming epicuri iudicabit nam. ”</p>
-
-                                <h4 class="client-name">John Stone</h4>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

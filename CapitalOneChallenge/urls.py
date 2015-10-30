@@ -18,7 +18,6 @@ urlpatterns = patterns('',
     
     url(r'^$', views.IndexPage.as_view(), name='index'),
     url(r'^trendingdata/', views.TrendingDataPage.as_view(), name='trending_data'),
-    url(r'^test/', views.Test.as_view(), name='test'),
     
     url(r'^test/', include('testapp.urls')),
     url(r'^users/', include('users.urls')),

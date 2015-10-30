@@ -42,21 +42,24 @@ class IndexPage(TemplateView):
 
         posts = []
         recent_tags = api.tag_recent_media(count=20, tag_name="CapitalOne")
+        top = []
         for tag in recent_tags[0]:
             user = api.user(tag.user.id)
 
+            # Parse comment and get sentiment analysis of the comment
             comment = tag.caption.text.replace("#", "")
             sentiment_analysis = getSentimentAnalysis(comment)
 
             posts.append((tag, user, sentiment_analysis)) 
-        return render(request, "index.html", {"posts": posts})
+            if(sentiment_analysis["label"] == "pos"):
+                top.append((tag.user.username, tag.caption.text))
+            
+        if(len(top) > 3):
+            top = top[0:3]
+
+        return render(request, "index.html", {"posts": posts, "top": top})
 
 class TrendingDataPage(TemplateView):
-    # def get(self, request):
-    #     post_data = [('txt','I love you'),]     # a sequence of two element tuples
-    #     result = urllib2.urlopen('http://sentiment.vivekn.com/api/text/', urllib.urlencode(post_data))
-    #     # content = result.read()
-    #     return HttpResponse(json.load(result))
     def get(self, request):
         # API endpoint to get data for charts
         params = request.GET
@@ -87,11 +90,6 @@ class TrendingDataPage(TemplateView):
         data = [next_, data]
 
         return HttpResponse(json.dumps(data), content_type='application/json')
-
-class Test(TemplateView):
-    def get(self, request):
-        return render(request, "temp.html")
-            
     
 def staff_only(view):
     """ Staff-only View decorator. """
