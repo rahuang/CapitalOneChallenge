@@ -5,11 +5,13 @@ var next = "";
 function loadStart(){
     $("#load-more").prop("disabled",true);
     $("#loader").show();
+    $("#loading-text").hide();
 }
 
 function loadFinish(){
     $("#load-more").prop("disabled",false);
     $("#loader").hide();
+    $("#loading-text").hide();
 }
 
 function formatData(data){
@@ -78,7 +80,7 @@ function displayCharts(dict){
             data: dict["neg"]
         }, {
             name: 'Neutral',
-            color: 'black',
+            color: 'blue',
             data: dict["neutral"]
         }]
     });
@@ -151,7 +153,7 @@ function displayD3(dict){
   var n = data.length, // total number of nodes
       m = 3; // number of distinct clusters
 
-  var color = ["green", "red", "black"];
+  var color = ["green", "red", "blue"];
 
   // The largest node for each cluster.
   var clusters = new Array(m);
