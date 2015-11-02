@@ -1,4 +1,4 @@
-Capital One Instgram Challenge
+Capital One Instagram Challenge
 ==============
 
 This project is built on the Django framework and utilizes the Instagram API as well as Text-Processing's Sentiment Analysis API. It utilizes HTML, Javascript/Jquery, CSS (Materialize Bootstrap) as well as other libraries such as D3, Highcharts, and Tooltipster.
