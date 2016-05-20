@@ -1,7 +1,7 @@
 Capital One Instagram Challenge
 ==============
 
-***Created By***: Richard Huang
+**Created By**: Richard Huang
 
 This project was built for the Capital One Winter Summit 2016 and its purpose is to analyze Capital One's social media presence on Instagram. It queries the top 20 most recent Instagram posts with #CapitalOne and using sentiment analysis, it determine whether or not each post is saying something positive, negative, or neutral about Capital One. The web app also using HighCharts and D3 to visualize how positively or negatively CapitalOne has been trending on Instagram and the user can load more and more data to get an even bigger picture.
 
